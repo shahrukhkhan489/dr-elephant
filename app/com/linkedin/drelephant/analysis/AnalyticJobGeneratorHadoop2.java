@@ -199,7 +199,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
   private JsonNode readJsonNode(URL url)
       throws IOException, AuthenticationException {
 //    HttpURLConnection conn = _authenticatedURL.openConnection(url, _token);
-    return _objectMapper.readTree(conn.getInputStream());
+    return _objectMapper.readTree(url.openStream());
   }
 
   /**
