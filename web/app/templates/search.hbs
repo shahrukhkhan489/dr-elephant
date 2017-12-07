@@ -26,6 +26,9 @@
             <table class="search-table">
                 <tr>
                     <td>
+                        <label>Job Name</label>{{input type="text" class="form-control" id="form-jobname" name="jobname" placeholder="Job Name" value=jobnameValue}}
+                    </td>
+                    <td>
                         <label>User</label>{{input type="text" class="form-control" id="form-username" name="username" placeholder="username" value=usernameValue}}
                     </td>
                     <td>
@@ -168,4 +171,3 @@
         {{paging-panel paging=paging loadPage=(action 'loadPage')}}
     {{/if}}
 </div>
-

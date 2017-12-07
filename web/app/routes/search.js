@@ -21,6 +21,7 @@ export default Ember.Route.extend({
         return Ember.RSVP.hash({
             searchOptions: this.store.queryRecord('search-option', {}),
             summaries: this.store.queryRecord('search-result', {
+                'jobname': this.jobname,
                 'username': this.username,
                 'queue-name': this.queueName,
                 'job-type': this.jobType,
@@ -35,6 +36,7 @@ export default Ember.Route.extend({
         });
     },
     beforeModel(transition) {
+        this.jobname = transition.queryParams.jobname;
         this.username = transition.queryParams.username;
         this.queueName = transition.queryParams.queueName;
         this.jobType = transition.queryParams.jobType;
