@@ -89,6 +89,7 @@ public class Application extends Controller {
   public static final String FLOW_DEF_ID = "flow-def-id";
   public static final String FLOW_EXEC_ID = "flow-exec-id";
   public static final String JOB_DEF_ID = "job-def-id";
+  public static final String NAME = "name";
   public static final String USERNAME = "username";
   public static final String QUEUE_NAME = "queue-name";
   public static final String SEVERITY = "severity";
@@ -326,6 +327,7 @@ public class Application extends Controller {
     Map<String, String> searchParams = new HashMap<String, String>();
 
     DynamicForm form = Form.form().bindFromRequest(request());
+    searchParams.put(NAME, form.get(NAME));
     String username = form.get(USERNAME);
     username = username != null ? username.trim().toLowerCase() : null;
     searchParams.put(USERNAME, username);
@@ -357,6 +359,10 @@ public class Application extends Controller {
     ExpressionList<AppResult> query = AppResult.find.select(selectParams).where();
 
     // Build predicates
+    String name = searchParams.get(NAME);
+    if (Utils.isSet(name)) {
+      query = query.eq(AppResult.TABLE.NAME, name);
+    }
     String username = searchParams.get(USERNAME);
     if (Utils.isSet(username)) {
       query = query.eq(AppResult.TABLE.USERNAME, username);

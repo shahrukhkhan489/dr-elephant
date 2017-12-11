@@ -29,7 +29,7 @@
   @tags.column(3) {
     @tags.panel(){ Search } {
       <form id="search-form" role="form" method="get" action="@routes.Application.search()">
-        <!--Job Id, FlowExec Url and the Username test input type-->
+        <!--Job Id, FlowExec Url, Name and the Username test input type-->
         <div class="form-group">
           <label for="form-job-id">Job/App ID</label>
           <input type="text" class="form-control" id="form-job-id" name="id" placeholder="Job ID">
@@ -43,8 +43,8 @@
           <input type="text" class="form-control" id="form-job-def-id" name="job-def-id" placeholder="Job Definition ID">
         </div>
         <div class="form-group">
-          <label for="form-job-name">Job Name</label>
-          <input type="text" class="form-control" id="form-jobname" name="jobname" placeholder="Job Name">
+          <label for="form-name">Job Name</label>
+          <input type="text" class="form-control" id="form-name" name="name" placeholder="Job Name">
         </div>
         <div class="form-group">
           <label for="form-username">User</label>

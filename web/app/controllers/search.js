@@ -21,11 +21,11 @@ export default Ember.Controller.extend({
   notifications: Ember.inject.service('notification-messages'),
   loading: false,
 
-  queryParams: ['jobname', 'username', 'queueName', 'jobType', 'severity', 'analysis', 'finishTimeBegin', 'finishTimeEnd',
+  queryParams: ['name', 'username', 'queueName', 'jobType', 'severity', 'analysis', 'finishTimeBegin', 'finishTimeEnd',
     'offset', 'limit'],
 
   /** query params **/
-  jobname: null,
+  name: null,
   username: null,
   queueName: null,
   jobType: null,
@@ -37,7 +37,7 @@ export default Ember.Controller.extend({
   limit: null,
 
   /** values for parameters **/
-  jobnameValue: null,
+  nameValue: null,
   usernameValue: null,
   queueNameValue: null,
   severityValue: null,
@@ -162,12 +162,12 @@ export default Ember.Controller.extend({
       this.set("finishTimeEnd", this.get("finishTimeEndValue"));
       this.set("severity", this.get("severityValue"));
       this.set("jobType", this.get("jobTypeValue"));
-      this.set("jobname", this.get("jobnameValue"));
+      this.set("name", this.get("nameValue"));
       this.set("username", this.get("usernameValue"));
       this.set("queueName", this.get("queueNameValue"));
       this.set("analysis", this.get("analysisValue"));
       var newsummaries = this.store.queryRecord('search-result', {
-        'jobname': this.jobname,
+        'name': this.name,
         'username': this.username,
         'queue-name': this.queueName,
         'job-type': this.jobType,
