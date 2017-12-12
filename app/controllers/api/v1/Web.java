@@ -407,15 +407,15 @@ public class Web extends Controller {
   *}
   * </pre>
   **/
- public static Result restJobSummariesForName(String name) {
+ public static Result restJobSummariesForName(String namevalue) {
 
    JsonArray jobSummaryArray = new JsonArray();
 
    List<AppResult> results = null;
-   if (name == null || name.isEmpty()) {
+   if (namevalue == null || name.isEmpty()) {
      results = getSchedulerApplications(MAX_APPLICATIONS_IN_WORKFLOW);
    } else {
-     results = getSchedulerApplications(name, MAX_APPLICATIONS_IN_WORKFLOW, 0);
+     results = getSchedulerApplications(namevalue, MAX_APPLICATIONS_IN_WORKFLOW, 0);
    }
 
    Map<IdUrlPair, List<AppResult>> jobExecIdToJobsMap = ControllerUtil
