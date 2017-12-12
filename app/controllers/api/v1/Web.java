@@ -145,8 +145,8 @@ public class Web extends Controller {
   * @param maxApplications The max number of applications that should be fetched
   * @return The list of Applications that should for the given name limit by maxApplications
   */
- private static List<AppResult> getApplications(String name, int maxApplications) {
-   List<AppResult> results = AppResult.find.select("*").where().eq(AppResult.TABLE.JOBNAME, name).order()
+ private static List<AppResult> getApplications(String name, int maxApplications, int nullvalue) {
+   List<AppResult> results = AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).order()
        .desc(AppResult.TABLE.FINISH_TIME).setMaxRows(maxApplications).findList();
    return results;
  }
@@ -180,9 +180,9 @@ public class Web extends Controller {
   * @param maxApplications The max number of applications that should be fetched
   * @return The list of Applications scheduled by a scheduler that should be fetched for the given name limit by maxApplications
   */
- private static List<AppResult> getSchedulerApplications(String name, int maxApplications) {
+ private static List<AppResult> getSchedulerApplications(String name, int maxApplications, int nullvalue) {
    List<AppResult> results =
-       AppResult.find.select("*").where().eq(AppResult.TABLE.JOBNAME, name).ne(AppResult.TABLE.FLOW_EXEC_ID, null)
+       AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).ne(AppResult.TABLE.FLOW_EXEC_ID, null)
            .ne(AppResult.TABLE.FLOW_EXEC_ID, "").order().desc(AppResult.TABLE.FINISH_TIME).setMaxRows(maxApplications)
            .findList();
    return results;
@@ -335,7 +335,7 @@ public class Web extends Controller {
    if (name == null || name.isEmpty()) {
      results = getApplications(MAX_APPLICATIONS);
    } else {
-     results = getApplications(name, MAX_APPLICATIONS);
+     results = getApplications(name, MAX_APPLICATIONS, 0);
    }
 
    for (AppResult application : results) {
@@ -415,7 +415,7 @@ public class Web extends Controller {
    if (name == null || name.isEmpty()) {
      results = getSchedulerApplications(MAX_APPLICATIONS_IN_WORKFLOW);
    } else {
-     results = getSchedulerApplications(name, MAX_APPLICATIONS_IN_WORKFLOW);
+     results = getSchedulerApplications(name, MAX_APPLICATIONS_IN_WORKFLOW, 0);
    }
 
    Map<IdUrlPair, List<AppResult>> jobExecIdToJobsMap = ControllerUtil
@@ -563,7 +563,7 @@ public class Web extends Controller {
    if (name == null || name.isEmpty()) {
      results = getSchedulerApplications(MAX_APPLICATIONS_IN_WORKFLOW);
    } else {
-     results = getSchedulerApplications(name, MAX_APPLICATIONS_IN_WORKFLOW);
+     results = getSchedulerApplications(name, MAX_APPLICATIONS_IN_WORKFLOW, 0);
    }
 
    Map<IdUrlPair, List<AppResult>> flowExecIdToJobsMap = ControllerUtil
@@ -1039,15 +1039,15 @@ public class Web extends Controller {
   *}
   * </pre>
   **/
- public static Result restJobSummariesForUser(String username) {
+  public static Result restJobSummariesForName(String nameval) {
 
    JsonArray jobSummaryArray = new JsonArray();
 
    List<AppResult> results = null;
-   if (username == null || username.isEmpty()) {
+   if (nameval == null || nameval.isEmpty()) {
      results = getSchedulerApplications(MAX_APPLICATIONS_IN_WORKFLOW);
    } else {
-     results = getSchedulerApplications(username, MAX_APPLICATIONS_IN_WORKFLOW);
+     results = getSchedulerApplications(nameval, MAX_APPLICATIONS_IN_WORKFLOW, 0);
    }
 
    Map<IdUrlPair, List<AppResult>> jobExecIdToJobsMap = ControllerUtil
@@ -1065,7 +1065,7 @@ public class Web extends Controller {
      String jobType = null;
      String jobId = jobDefPair.getId();
      String jobName = "";
-     String user = null;
+     String name = null;
      String queueName = "";
      String scheduler = "";
      String jobDefId = "";
@@ -1104,7 +1104,7 @@ public class Web extends Controller {
          applicationSeverityCount.put(application.severity, 1L);
        }
 
-       user = application.username;
+       name = application.nameval;
      }
 
      JsonArray applicationSeverity = new JsonArray();
@@ -1123,7 +1123,7 @@ public class Web extends Controller {
      jobObject.addProperty(JsonKeys.ID, jobId);
      jobObject.addProperty(JsonKeys.JOB_NAME, jobName);
      jobObject.addProperty(JsonKeys.JOB_TYPE, jobType);
-     jobObject.addProperty(JsonKeys.USERNAME, user);
+     jobObject.addProperty(JsonKeys.NAME, name);
      jobObject.addProperty(JsonKeys.START_TIME, jobStartTime);
      jobObject.addProperty(JsonKeys.FINISH_TIME, jobEndTime);
      jobObject.addProperty(JsonKeys.RUNTIME, totalJobRuntime);
