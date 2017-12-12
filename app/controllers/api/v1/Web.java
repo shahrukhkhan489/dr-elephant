@@ -2558,6 +2558,20 @@ public static Result restGetUsersSummaryStats() {
 
 
  /**
+  * Returns the filter parameters for the user summary
+  * @return The filter parameters for the user summary
+  */
+ public static Map<String, String> getFilterParamsForNameSummary() {
+   DynamicForm form = Form.form().bindFromRequest(request());
+   Map<String, String> filterParams = new HashMap<String, String>();
+   filterParams.put(Application.FINISHED_TIME_BEGIN, form.get(Application.FINISHED_TIME_BEGIN));
+   filterParams.put(Application.FINISHED_TIME_END, form.get(Application.FINISHED_TIME_END));
+   filterParams.put(Application.STARTED_TIME_BEGIN, form.get(Application.STARTED_TIME_BEGIN));
+   filterParams.put(Application.STARTED_TIME_END, form.get(Application.STARTED_TIME_END));
+   return filterParams;
+ }
+
+ /**
   * Generates the query for returning the application summaries
   * @param usernames The list of usernames
   * @param searchParams Any additional parameters
