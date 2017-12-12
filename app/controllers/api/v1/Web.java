@@ -412,7 +412,7 @@ public class Web extends Controller {
    JsonArray jobSummaryArray = new JsonArray();
 
    List<AppResult> results = null;
-   if (namevalue == null || name.isEmpty()) {
+   if (namevalue == null || namevalue.isEmpty()) {
      results = getSchedulerApplications(MAX_APPLICATIONS_IN_WORKFLOW);
    } else {
      results = getSchedulerApplications(namevalue, MAX_APPLICATIONS_IN_WORKFLOW, 0);
