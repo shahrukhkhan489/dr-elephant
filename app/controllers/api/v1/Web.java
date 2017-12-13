@@ -149,7 +149,7 @@ public class Web extends Controller {
 //   List<AppResult> results = AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).order()
    String pattern="%";
    name=pattern.concat(name.concat(pattern));
-   List<AppResult> results = AppResult.find.select("*").where().ilike(AppResult.TABLE.NAME, name).order()
+   List<AppResult> results = AppResult.find.select("*").where().like(AppResult.TABLE.NAME, name).order()
        .desc(AppResult.TABLE.FINISH_TIME).setMaxRows(maxApplications).findList();
    return results;
  }
