@@ -44,6 +44,7 @@ GET        /rest/jobmetricsgraphdata            controllers.Application.restJobM
 GET        /rest/flowmetricsgraphdata           controllers.Application.restFlowMetricsGraphData(id: String)
 GET        /rest/dashboard-summaries            controllers.api.v1.Web.restDashboardSummaries()
 GET        /rest/workflow-summaries             controllers.api.v1.Web.restWorkflowSummariesForUser(username: String)
+GET        /rest/jobname-summaries              controllers.api.v1.Web.restJobSummariesForName(username: String)
 GET        /rest/job-summaries                  controllers.api.v1.Web.restJobSummariesForUser(username: String)
 GET        /rest/application-summaries          controllers.api.v1.Web.restApplicationSummariesForUser(username: String)
 GET        /rest/workflows                      controllers.api.v1.Web.restWorkflowFromFlowId(workflowid: String)

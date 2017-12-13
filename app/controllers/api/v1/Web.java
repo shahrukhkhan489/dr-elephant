@@ -146,7 +146,10 @@ public class Web extends Controller {
   * @return The list of Applications that should for the given name limit by maxApplications
   */
  private static List<AppResult> getApplications(String name, int maxApplications, int nullvalue) {
-   List<AppResult> results = AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).order()
+//   List<AppResult> results = AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).order()
+   String pattern="%";
+   name=pattern.concat(name.concat(pattern));
+   List<AppResult> results = AppResult.find.select("*").where().ilike(AppResult.TABLE, name).order()
        .desc(AppResult.TABLE.FINISH_TIME).setMaxRows(maxApplications).findList();
    return results;
  }
