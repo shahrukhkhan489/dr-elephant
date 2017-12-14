@@ -145,10 +145,7 @@ public class Web extends Controller {
   * @param maxApplications The max number of applications that should be fetched
   * @return The list of Applications that should for the given name limit by maxApplications
   */
- private static List<AppResult> getApplications(String name, int maxApplications, int nullvalue) {
-//   List<AppResult> results = AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).order()
-   String pattern="%";
-   name=pattern.concat(name.concat(pattern));
+  private static List<AppResult> getApplications(String name, int maxApplications, int nullvalue) {
    List<AppResult> results = AppResult.find.select("*").where().contains(AppResult.TABLE.NAME, name).order()
        .desc(AppResult.TABLE.FINISH_TIME).setMaxRows(maxApplications).findList();
    return results;
@@ -185,7 +182,7 @@ public class Web extends Controller {
   */
  private static List<AppResult> getSchedulerApplications(String name, int maxApplications, int nullvalue) {
    List<AppResult> results =
-       AppResult.find.select("*").where().eq(AppResult.TABLE.NAME, name).ne(AppResult.TABLE.FLOW_EXEC_ID, null)
+       AppResult.find.select("*").where().contains(AppResult.TABLE.NAME, name).ne(AppResult.TABLE.FLOW_EXEC_ID, null)
            .ne(AppResult.TABLE.FLOW_EXEC_ID, "").order().desc(AppResult.TABLE.FINISH_TIME).setMaxRows(maxApplications)
            .findList();
    return results;
