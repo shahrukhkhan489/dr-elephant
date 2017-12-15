@@ -492,7 +492,7 @@ public class RestAPITest {
         Iterator<JsonNode> jobnameSummaries = response.asJson().elements();
         while (jobnameSummaries.hasNext()) {
           JsonNode jobnameSummary = jobnameSummaries.next();
-          Iterator<JsonNode> jobObjects = jobnameSummary.elements();
+          Iterator<JsonNode> jobnameObjects = jobnameSummary.elements();
           while (jobnameObjects.hasNext()) {
             JsonNode node = jobnameObjects.next();
             Assert.assertEquals(node.findValue("username").asText(), "growth");
