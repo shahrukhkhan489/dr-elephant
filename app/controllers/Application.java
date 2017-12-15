@@ -1595,7 +1595,7 @@ public class Application extends Controller {
    **/
   private static Collection<AppResourceUsageData> getNameResourceUsage(Date start, Date end) {
     long resourceUsed = 0;
-    Map<String, AppResourceUsageData> nameResourceUsage = new HashMap<String, AppResourceUsageData>();
+    Map<String, AppResourceUsageData> jobResourceUsage = new HashMap<String, AppResourceUsageData>();
     // Fetch all the appresults for the given time range [startTime, endTime).
     List<AppResult> results = AppResult.find.select("*")
         .where()
@@ -1604,16 +1604,16 @@ public class Application extends Controller {
 
     // aggregate the resourceUsage data at the job level
     for (AppResult result : results) {
-      if (!jobResourceUsage.containsKey(result.jobname)) {
+      if (!jobResourceUsage.containsKey(result.name)) {
         AppResourceUsageData data = new AppResourceUsageData();
-        data.job = result.jobname;
-        jobResourceUsage.put(result.jobname, data);
+        data.job = result.name;
+        jobResourceUsage.put(result.name, data);
       }
-      jobResourceUsage.get(result.namename).resourceUsed += Utils.MBSecondsToGBHours(result.resourceUsed);
-      nameResourceUsage.get(result.namename).resourceWasted += Utils.MBSecondsToGBHours(result.resourceWasted);
+      jobResourceUsage.get(result.name).resourceUsed += Utils.MBSecondsToGBHours(result.resourceUsed);
+      jobResourceUsage.get(result.name).resourceWasted += Utils.MBSecondsToGBHours(result.resourceWasted);
     }
 
-    return nameResourceUsage.values();
+    return jobResourceUsage.values();
   }
 
   /**
