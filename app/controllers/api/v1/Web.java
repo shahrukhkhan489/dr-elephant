@@ -2699,7 +2699,7 @@ public static Result restGetUsersSummaryStats() {
    ExpressionList<AppResult> query = AppResult.find.select(AppResult.getSearchFields()).where();
    Junction<AppResult> junction = query.disjunction();
    for (String name : names) {
-     junction..contains(AppResult.TABLE.NAME, name);
+     junction.contains(AppResult.TABLE.NAME, name);
    }
    query.endJunction();
 
