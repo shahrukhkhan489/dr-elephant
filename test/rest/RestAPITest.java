@@ -207,7 +207,7 @@ public class RestAPITest {
       public void run() {
         populateTestData();
         final WS.Response response = WS.url(BASE_URL + REST_SEARCH_PATH).
-            setQueryParameter("jobname", TEST_JOBNAME).
+            setQueryParameter("name", TEST_JOBNAME).
             setQueryParameter("", TEST_JOB_TYPE).
             get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
         JsonNode reponseJson = response.asJson();
@@ -416,7 +416,7 @@ public class RestAPITest {
       public void run() {
         populateTestData();
         final WS.Response response = WS.url(BASE_URL + REST_WORKFLOW_SUMMARIES_PATH).
-            setQueryParameter("jobname", TEST_JOBNAME).
+            setQueryParameter("name", TEST_JOBNAME).
             get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
         Iterator<JsonNode> workflowSummaries = response.asJson().elements();
         while (workflowSummaries.hasNext()) {
