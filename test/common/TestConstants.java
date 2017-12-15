@@ -74,7 +74,7 @@ public class TestConstants {
 
   //Paths to the UI rest end points
   public static final String REST_WORKFLOW_SUMMARIES_PATH = "/rest/workflow-summaries";
-  public static final String REST_JOBNAME_SUMMARIES_PATH = "/rest/job-summaries";
+  public static final String REST_JOBNAME_SUMMARIES_PATH = "/rest/jobname-summaries";
   public static final String REST_JOB_SUMMARIES_PATH = "/rest/job-summaries";
   public static final String REST_APPLICATION_SUMMARIES_PATH = "/rest/application-summaries";
   public static final String REST_WORKFLOWS_PATH = "/rest/workflows";
