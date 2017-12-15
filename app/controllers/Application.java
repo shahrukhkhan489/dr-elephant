@@ -1615,7 +1615,6 @@ public class Application extends Controller {
 
     return nameResourceUsage.values();
   }
-}
 
   /**
    * Returns the list of users with their resourceUsed and resourceWasted Data for the given time range
