@@ -361,7 +361,7 @@ public class Application extends Controller {
     // Build predicates
     String name = searchParams.get(NAME);
     if (Utils.isSet(name)) {
-      query = query.eq(AppResult.TABLE.NAME, name);
+      query = query.contains(AppResult.TABLE.NAME, name);
     }
     String username = searchParams.get(USERNAME);
     if (Utils.isSet(username)) {
