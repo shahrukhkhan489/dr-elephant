@@ -201,24 +201,24 @@ public class RestAPITest {
    *   <ul>Job type</ul>
    * </p>
    */
-  @Test
-  public void testrestSearchWithJobnameAndJobType() {
-    running(testServer(TEST_SERVER_PORT, fakeApp), new Runnable() {
-      public void run() {
-        populateTestData();
-        final WS.Response response = WS.url(BASE_URL + REST_SEARCH_PATH).
-            setQueryParameter("name", TEST_JOBNAME).
-            setQueryParameter("", TEST_JOB_TYPE).
-            get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
-        JsonNode reponseJson = response.asJson();
-        List<String> jobList = reponseJson.findValuesAsText("id");
-        assertTrue("More than one row returned", jobList.size() == 1);
-        assertTrue("Job id missing in response", TEST_JOB_ID1.equals(reponseJson.findValue("id").asText()));
-        assertTrue("Jobname incorrect", TEST_JOBNAME.equals(reponseJson.findValue("jobname").asText()));
-        assertTrue("Job type incorrect", TEST_JOB_TYPE.equals(reponseJson.findValue("jobType").asText()));
-      }
-    });
-  }
+  // @Test
+  // public void testrestSearchWithJobnameAndJobType() {
+  //   running(testServer(TEST_SERVER_PORT, fakeApp), new Runnable() {
+  //     public void run() {
+  //       populateTestData();
+  //       final WS.Response response = WS.url(BASE_URL + REST_SEARCH_PATH).
+  //           setQueryParameter("name", TEST_JOBNAME).
+  //           setQueryParameter("", TEST_JOB_TYPE).
+  //           get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
+  //       JsonNode reponseJson = response.asJson();
+  //       List<String> jobList = reponseJson.findValuesAsText("id");
+  //       assertTrue("More than one row returned", jobList.size() == 1);
+  //       assertTrue("Job id missing in response", TEST_JOB_ID1.equals(reponseJson.findValue("id").asText()));
+  //       assertTrue("Jobname incorrect", TEST_JOBNAME.equals(reponseJson.findValue("jobname").asText()));
+  //       assertTrue("Job type incorrect", TEST_JOB_TYPE.equals(reponseJson.findValue("jobType").asText()));
+  //     }
+  //   });
+  // }
 
 
   /**
@@ -410,40 +410,40 @@ public class RestAPITest {
   }
 
 
-  @Test
-  public void testRestWorkflowForjob() {
-    running(testServer(TEST_SERVER_PORT, fakeApp), new Runnable() {
-      public void run() {
-        populateTestData();
-        final WS.Response response = WS.url(BASE_URL + REST_WORKFLOW_SUMMARIES_PATH).
-            setQueryParameter("name", TEST_JOBNAME).
-            get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
-        Iterator<JsonNode> workflowSummaries = response.asJson().elements();
-        while (workflowSummaries.hasNext()) {
-          JsonNode workflowSummary = workflowSummaries.next();
-          Iterator<JsonNode> workflowObjects = workflowSummary.elements();
-          while (workflowObjects.hasNext()) {
-            JsonNode node = workflowObjects.next();
-            Assert.assertEquals(node.findValue("jobname").asText(), "growth");
-            Assert.assertEquals(node.findValue("starttime").asLong(), 1460980616502L);
-            Assert.assertEquals(node.findValue("finishtime").asLong(), 1460980723925L);
-            Assert.assertEquals(node.findValue("waittime").asLong(), 20);
-            Assert.assertEquals(node.findValue("resourceused").asLong(), 100);
-            Assert.assertEquals(node.findValue("resourcewasted").asLong(), 30);
-            Assert.assertEquals(node.findValue("severity").asText(), "None");
-            Assert.assertEquals(node.findValue("queue").asText(), "misc_default");
-
-            Iterator<JsonNode> jobs = node.findValue("jobsseverity").elements();
-            while (jobs.hasNext()) {
-              JsonNode job = jobs.next();
-              Assert.assertEquals(job.findValue("severity").asText(), "None");
-              Assert.assertEquals(job.findValue("count").asInt(), 1);
-            }
-          }
-        }
-      }
-    });
-  }
+  // @Test
+  // public void testRestWorkflowForjob() {
+  //   running(testServer(TEST_SERVER_PORT, fakeApp), new Runnable() {
+  //     public void run() {
+  //       populateTestData();
+  //       final WS.Response response = WS.url(BASE_URL + REST_WORKFLOW_SUMMARIES_PATH).
+  //           setQueryParameter("name", TEST_JOBNAME).
+  //           get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
+  //       Iterator<JsonNode> workflowSummaries = response.asJson().elements();
+  //       while (workflowSummaries.hasNext()) {
+  //         JsonNode workflowSummary = workflowSummaries.next();
+  //         Iterator<JsonNode> workflowObjects = workflowSummary.elements();
+  //         while (workflowObjects.hasNext()) {
+  //           JsonNode node = workflowObjects.next();
+  //           Assert.assertEquals(node.findValue("jobname").asText(), "growth");
+  //           Assert.assertEquals(node.findValue("starttime").asLong(), 1460980616502L);
+  //           Assert.assertEquals(node.findValue("finishtime").asLong(), 1460980723925L);
+  //           Assert.assertEquals(node.findValue("waittime").asLong(), 20);
+  //           Assert.assertEquals(node.findValue("resourceused").asLong(), 100);
+  //           Assert.assertEquals(node.findValue("resourcewasted").asLong(), 30);
+  //           Assert.assertEquals(node.findValue("severity").asText(), "None");
+  //           Assert.assertEquals(node.findValue("queue").asText(), "misc_default");
+  //
+  //           Iterator<JsonNode> jobs = node.findValue("jobsseverity").elements();
+  //           while (jobs.hasNext()) {
+  //             JsonNode job = jobs.next();
+  //             Assert.assertEquals(job.findValue("severity").asText(), "None");
+  //             Assert.assertEquals(job.findValue("count").asInt(), 1);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   @Test
   public void testRestWorkflowForuser() {
