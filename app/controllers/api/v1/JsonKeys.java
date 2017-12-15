@@ -72,7 +72,6 @@ public class JsonKeys {
   public static final String TOTAL_WORKFLOWS = "totalworkflows";
 
   // Jobs
-  public static final String JOBNAME_SUMMARIES = "jobname-summaries";
   public static final String JOB_SUMMARIES = "job-summaries";
   public static final String JOBS_SEVERITY = "jobsseverity";
   public static final String JOB_EXEC_ID = "jobexecid";
