@@ -481,42 +481,42 @@ public class RestAPITest {
   }
 
 
-  @Test
-  public void testRestJobNameForUser() {
-    running(testServer(TEST_SERVER_PORT, fakeApp), new Runnable() {
-      public void run() {
-        populateTestData();
-        final WS.Response response = WS.url(BASE_URL + REST_JOBNAME_SUMMARIES_PATH).
-            setQueryParameter("jobname", TEST_JOBNAME).
-            get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
-        Iterator<JsonNode> jobnameSummaries = response.asJson().elements();
-        while (jobnameSummaries.hasNext()) {
-          JsonNode jobnameSummary = jobnameSummaries.next();
-          Iterator<JsonNode> jobnameObjects = jobnameSummary.elements();
-          while (jobnameObjects.hasNext()) {
-            JsonNode node = jobnameObjects.next();
-            Assert.assertEquals(node.findValue("username").asText(), "growth");
-            Assert.assertEquals(node.findValue("jobname").asText(), "overwriter-reminder2");
-            Assert.assertEquals(node.findValue("jobtype").asText(), "HadoopJava");
-            Assert.assertEquals(node.findValue("starttime").asLong(), 1460980616502L);
-            Assert.assertEquals(node.findValue("finishtime").asLong(), 1460980723925L);
-            Assert.assertEquals(node.findValue("waittime").asLong(), 20);
-            Assert.assertEquals(node.findValue("resourceused").asLong(), 100);
-            Assert.assertEquals(node.findValue("resourcewasted").asLong(), 30);
-            Assert.assertEquals(node.findValue("severity").asText(), "None");
-            Assert.assertEquals(node.findValue("queue").asText(), "misc_default");
-
-            Iterator<JsonNode> tasks = node.findValue("tasksseverity").elements();
-            while (tasks.hasNext()) {
-              JsonNode jobname = tasks.next();
-              Assert.assertEquals(jobname.findValue("severity").asText(), "None");
-              Assert.assertEquals(jobname.findValue("count").asInt(), 1);
-            }
-          }
-        }
-      }
-    });
-  }
+  // @Test
+  // public void testRestJobNameForUser() {
+  //   running(testServer(TEST_SERVER_PORT, fakeApp), new Runnable() {
+  //     public void run() {
+  //       populateTestData();
+  //       final WS.Response response = WS.url(BASE_URL + REST_JOBNAME_SUMMARIES_PATH).
+  //           setQueryParameter("jobname", TEST_JOBNAME).
+  //           get().get(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS);
+  //       Iterator<JsonNode> jobnameSummaries = response.asJson().elements();
+  //       while (jobnameSummaries.hasNext()) {
+  //         JsonNode jobnameSummary = jobnameSummaries.next();
+  //         Iterator<JsonNode> jobnameObjects = jobnameSummary.elements();
+  //         while (jobnameObjects.hasNext()) {
+  //           JsonNode node = jobnameObjects.next();
+  //           Assert.assertEquals(node.findValue("username").asText(), "growth");
+  //           Assert.assertEquals(node.findValue("jobname").asText(), "overwriter-reminder2");
+  //           Assert.assertEquals(node.findValue("jobtype").asText(), "HadoopJava");
+  //           Assert.assertEquals(node.findValue("starttime").asLong(), 1460980616502L);
+  //           Assert.assertEquals(node.findValue("finishtime").asLong(), 1460980723925L);
+  //           Assert.assertEquals(node.findValue("waittime").asLong(), 20);
+  //           Assert.assertEquals(node.findValue("resourceused").asLong(), 100);
+  //           Assert.assertEquals(node.findValue("resourcewasted").asLong(), 30);
+  //           Assert.assertEquals(node.findValue("severity").asText(), "None");
+  //           Assert.assertEquals(node.findValue("queue").asText(), "misc_default");
+  //
+  //           Iterator<JsonNode> tasks = node.findValue("tasksseverity").elements();
+  //           while (tasks.hasNext()) {
+  //             JsonNode jobname = tasks.next();
+  //             Assert.assertEquals(jobname.findValue("severity").asText(), "None");
+  //             Assert.assertEquals(jobname.findValue("count").asInt(), 1);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   @Test
   public void testRestJobForUser() {
