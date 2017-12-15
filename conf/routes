@@ -56,6 +56,14 @@ GET        /rest/user-details                   controllers.api.v1.Web.restGetUs
 GET        /rest/workflow-exceptions            controllers.api.v1.Web.restExceptions()
 GET        /rest/exception-statuses             controllers.api.v1.Web.restExceptionStatuses()
 
+# By Job Name
+GET        /rest/workflow-summaries-by-jobname             controllers.api.v1.Web.restWorkflowSummariesForName(username: String)
+GET        /rest/job-summaries-by-jobname                  controllers.api.v1.Web.restJobSummariesForName(username: String)
+GET        /rest/application-summaries-by-jobname          controllers.api.v1.Web.restApplicationSummariesForName(username: String)
+GET        /rest/job-details                               controllers.api.v1.Web.restGetNamesSummaryStats()
+GET        /rest/resourceusagedatabyjobname                controllers.Application.restResourceUsageDataByName(startTime: String, endTime: String)
+
+
 # Metrics calls
 GET        /ping                                controllers.MetricsController.ping()
 GET        /metrics                             controllers.MetricsController.index()
