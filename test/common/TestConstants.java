@@ -29,7 +29,7 @@ public class TestConstants {
   public static final String TEST_JOB_NAME = "Email Overwriter";
   public static final String TEST_JOB_TYPE = "HadoopJava";
   public static final String TEST_APP_TYPE = "HadoopJava";
-  public static final String TEST_JOBNAME = "Email Overwriter";
+  // public static final String TEST_JOBNAME = "Email Overwriter";
   public static final String TEST_USERNAME = "growth";
   public static final String TEST_DEFAULT_QUEUE_NAME = "default";
 
