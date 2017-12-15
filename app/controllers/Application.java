@@ -1362,39 +1362,39 @@ public class Application extends Controller {
     return ok(new Gson().toJson(sortedDatasets));
   }
 
-  /**
-   *
-   * @param startTime - beginning of the time window
-   * @param endTime - end of the time window
-   * @return Json of resourceUsage data for each jobname for the given time window
-   *    eg. [{"jobname":"bmr","resourceUsed":168030208,"resourceWasted":27262750},
-   *        {"jobname":"payments","resourceUsed":18432,"resourceWasted":3447},
-   *        {"jobname":"myu","resourceUsed":558211072,"resourceWasted":81573818}]
-   */
-  public static Result restResourceUsageDataByName(String startTime, String endTime) {
-    try {
-      JsonArray datasets = new JsonArray();
-      if(startTime.length() != endTime.length() ||
-          (startTime.length() != 10 && startTime.length() != 13)) {
-        return status(300);
-      }
-      SimpleDateFormat tf = null ;
-      if( startTime.length() == 10 ) {
-         tf = new SimpleDateFormat("yyyy-MM-dd");
-      }
-      else {
-        tf = new SimpleDateFormat("yyyy-MM-dd-HH");
-      }
-      Date start = tf.parse(startTime);
-      Date end = tf.parse(endTime);
-      Collection<AppResourceUsageData> result = getNameResourceUsage(start, end);
-
-      return ok(new Gson().toJson(result));
-    }
-    catch(ParseException ex) {
-      return status(300,"Invalid datetime format : " + ex.getMessage());
-    }
-  }
+  // /**
+  //  *
+  //  * @param startTime - beginning of the time window
+  //  * @param endTime - end of the time window
+  //  * @return Json of resourceUsage data for each jobname for the given time window
+  //  *    eg. [{"jobname":"bmr","resourceUsed":168030208,"resourceWasted":27262750},
+  //  *        {"jobname":"payments","resourceUsed":18432,"resourceWasted":3447},
+  //  *        {"jobname":"myu","resourceUsed":558211072,"resourceWasted":81573818}]
+  //  */
+  // public static Result restResourceUsageDataByName(String startTime, String endTime) {
+  //   try {
+  //     JsonArray datasets = new JsonArray();
+  //     if(startTime.length() != endTime.length() ||
+  //         (startTime.length() != 10 && startTime.length() != 13)) {
+  //       return status(300);
+  //     }
+  //     SimpleDateFormat tf = null ;
+  //     if( startTime.length() == 10 ) {
+  //        tf = new SimpleDateFormat("yyyy-MM-dd");
+  //     }
+  //     else {
+  //       tf = new SimpleDateFormat("yyyy-MM-dd-HH");
+  //     }
+  //     Date start = tf.parse(startTime);
+  //     Date end = tf.parse(endTime);
+  //     Collection<AppResourceUsageData> result = getNameResourceUsage(start, end);
+  //
+  //     return ok(new Gson().toJson(result));
+  //   }
+  //   catch(ParseException ex) {
+  //     return status(300,"Invalid datetime format : " + ex.getMessage());
+  //   }
+  // }
 
   /**
    *
@@ -1589,32 +1589,32 @@ public class Application extends Controller {
     double resourceWasted;
   }
 
-  /**
-   * Returns the list of jobs names with their resourceUsed and resourceWasted Data for the given time range
-   * @return list of AppResourceUsageData
-   **/
-  private static Collection<AppResourceUsageData> getNameResourceUsage(Date start, Date end) {
-    long resourceUsed = 0;
-    Map<String, AppResourceUsageData> jobResourceUsage = new HashMap<String, AppResourceUsageData>();
-    // Fetch all the appresults for the given time range [startTime, endTime).
-    List<AppResult> results = AppResult.find.select("*")
-        .where()
-        .ge(AppResult.TABLE.START_TIME, start.getTime())
-        .lt(AppResult.TABLE.START_TIME, end.getTime()).findList();
-
-    // aggregate the resourceUsage data at the job level
-    for (AppResult result : results) {
-      if (!jobResourceUsage.containsKey(result.name)) {
-        AppResourceUsageData data = new AppResourceUsageData();
-        data.job = result.name;
-        jobResourceUsage.put(result.name, data);
-      }
-      jobResourceUsage.get(result.name).resourceUsed += Utils.MBSecondsToGBHours(result.resourceUsed);
-      jobResourceUsage.get(result.name).resourceWasted += Utils.MBSecondsToGBHours(result.resourceWasted);
-    }
-
-    return jobResourceUsage.values();
-  }
+  // /**
+  //  * Returns the list of jobs names with their resourceUsed and resourceWasted Data for the given time range
+  //  * @return list of AppResourceUsageData
+  //  **/
+  // private static Collection<AppResourceUsageData> getNameResourceUsage(Date start, Date end) {
+  //   long resourceUsed = 0;
+  //   Map<String, AppResourceUsageData> jobResourceUsage = new HashMap<String, AppResourceUsageData>();
+  //   // Fetch all the appresults for the given time range [startTime, endTime).
+  //   List<AppResult> results = AppResult.find.select("*")
+  //       .where()
+  //       .ge(AppResult.TABLE.START_TIME, start.getTime())
+  //       .lt(AppResult.TABLE.START_TIME, end.getTime()).findList();
+  //
+  //   // aggregate the resourceUsage data at the job level
+  //   for (AppResult result : results) {
+  //     if (!jobResourceUsage.containsKey(result.name)) {
+  //       AppResourceUsageData data = new AppResourceUsageData();
+  //       data.job = result.name;
+  //       jobResourceUsage.put(result.name, data);
+  //     }
+  //     jobResourceUsage.get(result.name).resourceUsed += Utils.MBSecondsToGBHours(result.resourceUsed);
+  //     jobResourceUsage.get(result.name).resourceWasted += Utils.MBSecondsToGBHours(result.resourceWasted);
+  //   }
+  //
+  //   return jobResourceUsage.values();
+  // }
 
   /**
    * Returns the list of users with their resourceUsed and resourceWasted Data for the given time range
