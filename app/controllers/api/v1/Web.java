@@ -509,10 +509,10 @@ public class Web extends Controller {
      jobSummaryArray.add(jobObject);
    }
 
-   JsonArray sortedJobSummaryArray = getSortedJsonArrayByFinishTime(jobSummaryArray);
+   JsonArray sortedJobNameSummaryArray = getSortedJsonArrayByFinishTime(jobSummaryArray);
 
    JsonObject parent = new JsonObject();
-   parent.add(JsonKeys.JOB_SUMMARIES, sortedJobSummaryArray);
+   parent.add(JsonKeys.JOBNAME_SUMMARIES, sortedJobNameSummaryArray);
    return ok(new Gson().toJson(parent));
  }
 

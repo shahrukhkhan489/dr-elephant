@@ -29,6 +29,7 @@ public class TestConstants {
   public static final String TEST_JOB_NAME = "Email Overwriter";
   public static final String TEST_JOB_TYPE = "HadoopJava";
   public static final String TEST_APP_TYPE = "HadoopJava";
+  public static final String TEST_JOBNAME = "Email Overwriter";
   public static final String TEST_USERNAME = "growth";
   public static final String TEST_DEFAULT_QUEUE_NAME = "default";
 
@@ -73,6 +74,7 @@ public class TestConstants {
 
   //Paths to the UI rest end points
   public static final String REST_WORKFLOW_SUMMARIES_PATH = "/rest/workflow-summaries";
+  public static final String REST_JOBNAME_SUMMARIES_PATH = "/rest/job-summaries";
   public static final String REST_JOB_SUMMARIES_PATH = "/rest/job-summaries";
   public static final String REST_APPLICATION_SUMMARIES_PATH = "/rest/application-summaries";
   public static final String REST_WORKFLOWS_PATH = "/rest/workflows";
