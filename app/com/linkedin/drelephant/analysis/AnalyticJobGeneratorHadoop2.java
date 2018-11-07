@@ -37,11 +37,16 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
   private static final Logger logger = Logger.getLogger(AnalyticJobGeneratorHadoop2.class);
-  private static final String RESOURCE_MANAGER_ADDRESS = "yarn.resourcemanager.webapp.address";
+  private static final String RM_HTTP_POLICY = "yarn.http.policy";
   private static final String IS_RM_HA_ENABLED = "yarn.resourcemanager.ha.enabled";
   private static final String RESOURCE_MANAGER_IDS = "yarn.resourcemanager.ha.rm-ids";
-  private static final String RM_NODE_STATE_URL = "http://%s/ws/v1/cluster/info";
   private static final String FETCH_INITIAL_WINDOW_MS = "drelephant.analysis.fetch.initial.windowMillis";
+
+
+  //Assigning URL's a header of http:// or https:// depending if YARN https is enabled or not
+  private static String RM_URL_HEADER;
+  private static String RESOURCE_MANAGER_ADDRESS;
+  private static String RM_NODE_STATE_URL;
 
   private static Configuration configuration;
 
@@ -67,6 +72,31 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
   private final ArrayList<AnalyticJob> _secondRetryQueue = new ArrayList<AnalyticJob>();
 
   public void updateResourceManagerAddresses() {
+
+    String rm_http_policy = configuration.get(RM_HTTP_POLICY);
+
+    if (rm_http_policy == null) {
+      throw new RuntimeException(
+              "Cannot get YARN HTTP Policy [" + rm_http_policy + "] from Hadoop Configuration property: [" + RM_HTTP_POLICY
+                      + "].");
+    }
+
+    if (rm_http_policy.equals("HTTP_ONLY")) {
+      RESOURCE_MANAGER_ADDRESS = "yarn.resourcemanager.webapp.address";
+      RM_URL_HEADER = "http://";
+      RM_NODE_STATE_URL = RM_URL_HEADER + "%s/ws/v1/cluster/info";
+    } else if (rm_http_policy.equals("HTTPS_ONLY")) {
+      RESOURCE_MANAGER_ADDRESS = "yarn.resourcemanager.webapp.https.address";
+      RM_URL_HEADER = "https://";
+      RM_NODE_STATE_URL = RM_URL_HEADER + "%s/ws/v1/cluster/info";
+    }
+
+    if (RESOURCE_MANAGER_ADDRESS == null) {
+      throw new RuntimeException(
+              "RESOURCE_MANAGER_ADDRESS is not assigned - [" + RESOURCE_MANAGER_ADDRESS
+                    + "] as [" + RM_HTTP_POLICY + "] = [" + rm_http_policy + "].");
+    }
+
     if (Boolean.valueOf(configuration.get(IS_RM_HA_ENABLED))) {
       String resourceManagers = configuration.get(RESOURCE_MANAGER_IDS);
       if (resourceManagers != null) {
@@ -139,7 +169,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
         + ", and current time: " + _currentTime);
 
     // Fetch all succeeded apps
-    URL succeededAppsURL = new URL(new URL("http://" + _resourceManagerAddress), String.format(
+    URL succeededAppsURL = new URL(new URL(RM_URL_HEADER + _resourceManagerAddress), String.format(
             "/ws/v1/cluster/apps?finalStatus=SUCCEEDED&finishedTimeBegin=%s&finishedTimeEnd=%s",
             String.valueOf(_lastTime + 1), String.valueOf(_currentTime)));
     logger.info("The succeeded apps URL is " + succeededAppsURL);
@@ -149,7 +179,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
     // Fetch all failed apps
     // state: Application Master State
     // finalStatus: Status of the Application as reported by the Application Master
-    URL failedAppsURL = new URL(new URL("http://" + _resourceManagerAddress), String.format(
+    URL failedAppsURL = new URL(new URL(RM_URL_HEADER + _resourceManagerAddress), String.format(
         "/ws/v1/cluster/apps?finalStatus=FAILED&state=FINISHED&finishedTimeBegin=%s&finishedTimeEnd=%s",
         String.valueOf(_lastTime + 1), String.valueOf(_currentTime)));
     List<AnalyticJob> failedApps = readApps(failedAppsURL);
