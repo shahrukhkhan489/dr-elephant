@@ -45,13 +45,8 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
 
   //Assigning URL's a header of http:// or https:// depending if YARN https is enabled or not
   private static String RM_URL_HEADER;
-
   private static String RESOURCE_MANAGER_ADDRESS;
   private static String RM_NODE_STATE_URL;
-
-
-  //private static final String RESOURCE_MANAGER_ADDRESS = "yarn.resourcemanager.webapp.address";
-  //private static final String RM_NODE_STATE_URL = "http://%s/ws/v1/cluster/info";
 
   private static Configuration configuration;
 
@@ -85,7 +80,6 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
               "Cannot get YARN HTTP Policy [" + rm_http_policy + "] from Hadoop Configuration property: [" + RM_HTTP_POLICY
                       + "].");
     }
-
 
     if (rm_http_policy.equals("HTTP_ONLY")) {
       RESOURCE_MANAGER_ADDRESS = "yarn.resourcemanager.webapp.address";
