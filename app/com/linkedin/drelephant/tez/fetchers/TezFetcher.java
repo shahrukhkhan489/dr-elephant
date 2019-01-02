@@ -47,42 +47,42 @@ public class TezFetcher implements ElephantFetcher<TezApplicationData> {
   private String _timelineWebAddr;
 
   private FetcherConfigurationData _fetcherConfigurationData;
-  private static String RM_URL_HEADER;
+  private static String TIMELINE_SERVER_URL_SCHEME;
   private static String TIMELINE_SERVER_URL;
 
-  public TezFetcher(FetcherConfigurationData fetcherConfData) throws IOException {
-
+  public void setPolicybasedTimelineAddresses() {
     String rm_http_policy = new Configuration().get(RM_HTTP_POLICY);
-
     if (rm_http_policy == null) {
       throw new RuntimeException(
               "Cannot get YARN HTTP Policy [" + rm_http_policy + "] from Hadoop Configuration property: [" + RM_HTTP_POLICY
                       + "].");
     }
-
     if (rm_http_policy.equals("HTTP_ONLY")) {
       TIMELINE_SERVER_URL = "yarn.timeline-service.webapp.address";
-      RM_URL_HEADER = "http://";
+      TIMELINE_SERVER_URL_SCHEME = "http://";
     } else if (rm_http_policy.equals("HTTPS_ONLY")) {
       TIMELINE_SERVER_URL = "yarn.timeline-service.webapp.https.address";
-      RM_URL_HEADER = "https://";
+      TIMELINE_SERVER_URL_SCHEME = "https://";
     }
-
     if (TIMELINE_SERVER_URL == null) {
       throw new RuntimeException(
               "TIMELINE_SERVER_URL is not assigned - [" + TIMELINE_SERVER_URL
                     + "] as [" + RM_HTTP_POLICY + "] = [" + rm_http_policy + "].");
     }
+  }
+
+  public TezFetcher(FetcherConfigurationData fetcherConfData) throws IOException {
+    setPolicybasedTimelineAddresses();
 
     this._fetcherConfigurationData = fetcherConfData;
     final String applicationHistoryAddr = new Configuration().get(TIMELINE_SERVER_URL);
 
     //Connection validity checked using method verifyURL(_timelineWebAddr) inside URLFactory constructor;
-    _urlFactory = new URLFactory(applicationHistoryAddr,RM_URL_HEADER);
+    _urlFactory = new URLFactory(applicationHistoryAddr,TIMELINE_SERVER_URL_SCHEME);
     logger.info("Connection success.");
 
     _jsonFactory = new JSONFactory();
-    _timelineWebAddr = RM_URL_HEADER + _timelineWebAddr + "/ws/v1/timeline/";
+    _timelineWebAddr = TIMELINE_SERVER_URL_SCHEME + _timelineWebAddr + "/ws/v1/timeline/";
 
   }
 
@@ -167,8 +167,8 @@ public class TezFetcher implements ElephantFetcher<TezApplicationData> {
 
     private String _timelineWebAddr;
 
-    private URLFactory(String hserverAddr,String RM_URL_HEADER) throws IOException {
-      _timelineWebAddr = RM_URL_HEADER + hserverAddr + "/ws/v1/timeline";
+    private URLFactory(String hserverAddr,String TIMELINE_SERVER_URL_SCHEME) throws IOException {
+      _timelineWebAddr = TIMELINE_SERVER_URL_SCHEME + hserverAddr + "/ws/v1/timeline";
       verifyURL(_timelineWebAddr);
     }
 
